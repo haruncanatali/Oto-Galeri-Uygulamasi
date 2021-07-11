@@ -7,6 +7,7 @@ Bu projede Asp.Net MVC & WinForm(DevExpress) kullanılarak Oto-Galeri uygulamas�
  - WinForm
  - EntityFramework (Code First Yaklaşımıyla)
  - DevExpress
+ - Microsoft SQL Server
  - Çok Katmanlı Mimari
 	 - Galeri.Entities
 	 - Galeri.DataAccess
