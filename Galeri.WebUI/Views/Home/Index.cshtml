@@ -1,0 +1,27 @@
+﻿@model List<Galeri.Entities.Concrete.Tasit>
+@{
+    ViewBag.Title = "Anasayfa";
+}
+
+<div class="col-md-3 vh-100" style="background-color: #2d3436; position: fixed; ">
+    @Html.Partial("SolTanitim")
+</div>
+<div class="col-md-9" style="margin-left:350px;">
+    <div class="row mt-5">
+        @foreach (var item in Model)
+        {
+            <div class="card mt-2" style="width: 28rem; float:left; margin-left:25px;">
+                <img src="~/Content/Img/@item.AracaAitFotograflar.First().FotografAdi" height="225" width="225" class="card-img-top img-rounded" alt="..." style="margin-top:10px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center" style="font-weight:bold;">@item.Modeli.ModelAdi</h5>
+                    <p class="text-center">@item.Modeli.Yil Model</p>
+                    <h5 class="h5 text-center mt-3">@item.Fiyat.ToString() &#8378;</h5>
+                </div>
+                <div class="d-flex justify-content-center" style="margin-bottom:20px;">
+                    <a href="/Arac/OzelAracGetir/@item.Id" class="btn btn-primary btn-sm">Detaylar İçin Tıkla</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

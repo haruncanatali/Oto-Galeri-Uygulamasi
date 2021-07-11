@@ -1,0 +1,259 @@
+﻿@model Galeri.Entities.Concrete.Tasit
+@{
+    ViewBag.Title = Model.Modeli.ModelAdi;
+}
+
+<div class="row mt-5" style="margin-left:25px;">
+    <div class="col-md-5">
+        <div>
+            <a href="#" data-toggle="modal" data-target="#modal1">
+                <img class="img-rounded" src="~/Content/Img/@Model.AracaAitFotograflar.First().FotografAdi" alt="resim_tanımlanamadı!" height="300" width="500" />
+            </a>
+        </div>
+        <div class="mt-3">
+            @{ 
+                    int counter = 1;
+                    string text = "";
+            }
+            @foreach (var item in Model.AracaAitFotograflar.Skip(1).ToList())
+                    {
+                        text = "#modal" + (++counter);
+                <a href="#" data-toggle="modal" data-target="@text">
+                    <div style="float:left; margin-left:12px;">
+                        <img class="img-rounded" src="~/Content/Img/@item.FotografAdi" alt="resim_tanımlanamadı!" height="120" width="150" />
+                    </div>    
+                </a>
+            }
+        </div>
+    </div>
+    <div class="col-md-7">
+        <h4 class="h4 mb-4" style="font-weight:bolder; font-style:italic;">@Model.TasitBaslik</h4>
+        <table class="table table-responsive table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Kategori</th>
+                    <th>Model</th>
+                    <th>Yıl</th>
+                    <th>Yakıt</th>
+                    <th>Vites</th>
+                    <th>Kilometresi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Kategorisi.KategoriAdi</td>
+                    <td>@Model.Modeli.ModelAdi</td>
+                    <td>@Model.Modeli.Yil</td>
+                    <td>@Model.Modeli.Yakit</td>
+                    <td>@Model.Modeli.Vites</td>
+                    <td>@Model.Kilometre km</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-striped table-sm mt-3">
+            <thead>
+                <tr>
+                    <th>Motor Gücü</th>
+                    <th>Motor Hacmi</th>
+                    <th>Azami Sürat</th>
+                    <th>Bagaj Kapasitesi</th>
+                    <th>Çekiş</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Modeli.MotorGucu cc</td>
+                    <td>@Model.Modeli.MotorHacmi hp</td>
+                    <td>@Model.Modeli.AzamiSurat km/h</td>
+                    <td>@Model.Modeli.BagajKapasitesi lt</td>
+                    <td>@Model.Modeli.Cekis</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-striped table-sm mt-3">
+            <thead>
+                <tr>
+                    <th>Garanti</th>
+                    <th>Takas</th>
+                    <th>Plaka</th>
+                    <th>Durum</th>
+                    <th>Renk</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @{ 
+                        string garanti, takas;
+                        garanti = Model.Garanti == true ? "Var" : "Yok";
+                        takas = Model.Takas == true ? "Var" : "Yok";
+                    }
+                    <td>@garanti</td>
+                    <td>@takas</td>
+                    <td>@Model.Plaka</td>
+                    <td>@Model.Durum</td>
+                    <td>@Model.Renk</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="5" class="text-center" style="font-weight:bold; font-size:large;"><span>Fiyat</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @{ 
+                        string fiyat = Model.Fiyat>=100000 ? (Model.Fiyat).ToString().Insert(3, ".") : (Model.Fiyat).ToString().Insert(2, ".");
+                    }
+                    <td colspan="5" class="text-center"><span>@fiyat &#8378;</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="row">
+    <p style="margin-top:20px; margin-left:100px;"><i class="fas fa-search-plus"></i>&nbsp;&nbsp; Yakınlaştırmak İçin Fotoğrafın Üzerine Tıklayınız.</p>
+</div>
+<hr />
+<div class="d-flex content-justify-center ml-3">
+    <h2 class="display-5 text-center" style="background-color: #130f40; width:1400px;"><span class="text-white">Açıklama</span></h2>
+</div>
+<div class="row">
+    <div class="card" style="width: 1400px; margin-left:15px;">
+        <div class="card-body">
+            <p>@Html.Raw(Model.Aciklama)</p>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    @if (Model.HasarKayitlari.Count() < 1)
+    {
+        <div class="alert alert-success" style="width:1400px; margin-left:15px;" role="alert">
+            <span style="font-weight:bold;">Aracın Kayıtlı Hasar Kaydı Bulunamadı!</span>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" style="width:1400px; margin-left:15px; margin-bottom:-1px;" role="alert">
+            <span style="font-weight:bold;">Araca Kayıtlı @Model.HasarKayitlari.Count().ToString() Adet Hasar Kaydı Bulunmaktadır.</span>
+        </div>
+        foreach (var item in Model.HasarKayitlari)
+        {
+            <table class="table table-sm table-bordered table-striped mt-1" style="margin-left:15px;">
+                <thead>
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Parça</th>
+                        <th>Masraf</th>
+                        <th>Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@item.Tarih.ToString("dd.MM.yyyy")</td>
+                        <td>@item.Parca</td>
+                        <td>@item.Masraf &#8378;</td>
+                        <td>@item.Aciklama</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+</div>
+<div class="row">
+    <div class="card border-0" style="width:1400px; margin-left:15px;">
+        <div class="card-header" style="background-color: #7f8fa6;">
+            <h4 class="text-center">Yorumlar</h4>
+        </div>
+        <div class="card-body">           
+            <form action="/Yorum/YorumEkle" method="post">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-2"> 
+                        <label>Adınız</label>
+                        <input class="form-control" type="text" id="Ad" name="Ad" placeholder="Adınızı Giriniz" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Soyadınız</label>
+                        <input class="form-control" type="text" id="Soyad" name="Soyad" placeholder="Soyadınızı Giriniz" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Mail Adresiniz</label>
+                        <input class="form-control" type="text" id="Mail" name="Mail" placeholder="Mail Adresinizi Giriniz" />
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <label style="margin-left:1230px;">Yorumunuz</label>
+                    <textarea style="width:400px;" class="form-control" id="Icerik" name="Icerik" placeholder="Yorumunuzu Giriniz"></textarea>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <input type="text" name="TasitId" value="@Model.Id" hidden/>
+                    <input type="submit" name="" value="Gönder" class="btn btn-primary btn-sm" style="width:100px; margin-top:10px;" />
+                </div>
+            </form>      
+        </div>
+    </div>
+</div>
+<div class="row">
+    @if(Model.AracaAitYorumlar.Count() < 1) { 
+    <div class="alert alert-warning" style="width:1400px; margin-left:15px; margin-bottom:-1px;" role="alert">
+        <span style="font-weight:bold;">Araca henüz yorum yapan olmamış. İlk yorum yapan sen ol!</span>
+    </div>
+    }
+    else{
+<div class="row d-flex justify-content-center mt-2">
+    @foreach (var item in Model.AracaAitYorumlar)
+    {
+    <div class="card border-2" style="width:1000px;">
+        <div class="row mt-2">
+            <div class="col-md-3 d-flex justify-content-end">
+                <img src="~/Content/Img/users.png" alt="" width="75" height="75" />
+            </div>
+            <div class="col-md-8">
+                <h4 class="h4" style="font-weight:bold;">@item.Ad @item.Soyad</h4>
+                <p class="">@item.Icerik</p>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+    }
+</div>
+
+<div class="modal" id="modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="~/Content/Img/@Model.AracaAitFotograflar.First().FotografAdi" width="450" height="450" alt="Alternate Text" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="~/Content/Img/@Model.AracaAitFotograflar.Skip(1).First().FotografAdi" width="450" height="450" alt="Alternate Text" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modal3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="~/Content/Img/@Model.AracaAitFotograflar.Skip(2).First().FotografAdi" width="450" height="450" alt="Alternate Text" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modal4">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="~/Content/Img/@Model.AracaAitFotograflar.Skip(3).First().FotografAdi" width="450" height="450" alt="Alternate Text" />
+            </div>
+        </div>
+    </div>
+</div>
